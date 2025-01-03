@@ -46,7 +46,7 @@ def getData():
 
 # function to get the related news
 def search_news(query):
-    API_KEY = 'f0edf6c162b74e9db7ef89861aed265f'
+    API_KEY = '<news_api_key>'
     NEWS_API_URL = "https://newsapi.org/v2/everything"
     # Define the parameters for the API request
     params = {
