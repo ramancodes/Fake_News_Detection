@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+
+    <title>Fake News Detection</title>
+  </head>
+  <body class="bg-gray-200">
+    <header class="text-gray-600 body-font -my-8">
+      <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center justify-center">
+        <a class="flex title-font font-medium items-center text-gray-900 md:mb-0 justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-10 h-10 text-white p-2 bg-green-500 rounded-full" viewBox="0 0 24 24">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+          </svg>
+          <span class="ml-3 text-xl">Fake News Detection</span>
+        </a>
+        <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center gap-5">
+          <a href="/" class="hover:bg-gray-400 hover:text-white px-2 py-2 rounded">Home</a>
+          <a class="hover:bg-gray-400 hover:text-white px-2 py-2 rounded">About us</a>
+          <a href="/prediction" class="hover:bg-gray-400 hover:text-white px-2 py-2 rounded">Prediction</a>
+          <a class="hover:bg-gray-400 hover:text-white px-2 py-2 rounded">Contact us</a>
+        </nav>
+      </div>
+  </header>
+
+  <hr>
+
+      <section class="text-gray-600 body-font -my-8">
+        <div class="container px-5 py-24 mx-auto">
+          <div class="flex flex-col text-start w-full mb-20">
+            <div class="flex">
+              <div class="flex flex-col text-start">
+                <h2 class="text-xs text-green-500 tracking-widest font-medium title-font mb-1">Machine Learning Project</h2>
+                <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">Fake News Detection</h1>
+                <p class="lg:w-2/3">This section demonstrates how the trained model predicts whether a given news article is "Real" or "Fake." The predictions are based on the text features extracted using the TfidfVectorizer and classified using the Passive Aggressive Classifier.</p>
+                <p class="text-info mt-4">Visit major news sources:</p>
+                <ul class="flex gap-5 p-2 rounded">
+                  <li><a href="https://www.cnn.com" target="_blank">> CNN Website</a></li>
+                  <li><a href="https://www.bbc.com/news" target="_blank">> BBC Website</a></li>
+                </ul>
+              </div>
+
+              <div class="w-2/5">
+                <img class="object-cover object-center rounded" alt="hero" src="../static/image2.svg">
+              </div>
+            </div>
+
+          <div class="center mt-2">
+            <form action="/prediction" method="POST">
+                <div class="mb-3">
+                  <label for="news" class="form-label font-medium">Enter News Headline</label>
+                  <input type="text" class="form-control" id="news" name="news" aria-describedby="newsHelp" required>
+                  <div id="newsHelp" class="form-text text-xs">Input a news headline for classification.</div>
+                </div>
+              
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+          </div>
+
+          <div class="flex flex-col justify-center items-center mt-2">
+            {% if submmited_news %}
+              <p class="font-medium text-lg p-2">Result:</p>
+              <p class="bg-white rounded mt-2 p-2">Entered News: <strong><span>{{ submmited_news }}</span></strong></p>
+            
+              <p class="text-primary mt-2 p-2"><b>{{ prediction_text }}</b></p>
+              <div class="flex flex-col items-center rounded mt-2 mb-4">
+                {% if response_status_code==200 %}
+                  <p>{{response}}</p>
+                  <div class="flex flex-col gap-2 mt-4">
+                    {% for i in range(matched_length) %}
+                      <label for="rep_link" class="flex flex-col gap-2 bg-white rounded p-2 cursor-pointer">
+                        <p class="text-sm font-medium">{{ matched_articles_title[i] }}</p>
+                        <p class="text-xs">{{ matched_articles_description[i] }}</p>
+                        <a class="text-sm p-2" href='{{ matched_urls[i] }}' target="_blank" id="rep_link">> Click Here</a>
+                      </label>
+                    {% endfor %}
+                  </div>
+                {% else %}
+                  <p class="text-danger p-2">No direct source found for this headline.</p>
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
+          </div>
+        </div>
+      </section>
+
+    <!-- Optional JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+  </body>
+</html>
